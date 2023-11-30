@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <unordered_map>
 
+using namespace std;
+
+
 class Edge {
 public:
     int src, dest, weight;
@@ -15,7 +18,7 @@ public:
 class Graph {
 public:
     int V, E;
-    std::vector<Edge> edges;
+    vector<Edge> edges;
 
     Graph(int V, int E) : V(V), E(E) {}
 
@@ -23,13 +26,13 @@ public:
         edges.push_back({src, dest, weight});
     }
 
-    int find(std::unordered_map<int, int> &parent, int i) {
+    int find(unordered_map<int, int> &parent, int i) {
         if (parent.find(i) == parent.end() || parent[i] == i)
             return i;
         return find(parent, parent[i]);
     }
 
-    void Union(std::unordered_map<int, int> &parent, std::vector<int> &rank, int x, int y) {
+    void Union(unordered_map<int, int> &parent, vector<int> &rank, int x, int y) {
         int xroot = find(parent, x);
         int yroot = find(parent, y);
 
@@ -44,11 +47,11 @@ public:
     }
 
     void VyssotskyMST() {
-        std::vector<Edge> result;
-        std::unordered_map<int, int> parent;
-        std::vector<int> rank(V, 0);
+        vector<Edge> result;
+        unordered_map<int, int> parent;
+        vector<int> rank(V, 0);
 
-        std::sort(edges.begin(), edges.end(), [](const Edge &a, const Edge &b) {
+        sort(edges.begin(), edges.end(), [](const Edge &a, const Edge &b) {
             return a.weight < b.weight;
         });
 
@@ -67,33 +70,33 @@ public:
                     }
                 }
                 if (!(maxEdge == e)) {
-                    result.erase(std::remove_if(result.begin(), result.end(),
+                    result.erase(remove_if(result.begin(), result.end(),
                         [&maxEdge](const Edge& edge) { return edge == maxEdge; }), result.end());
                     result.push_back(e);
                 }
             }
         }
 
-        std::cout << "Cac canh trong cay bao trum nho nhat:\n";
+        cout << "Cac canh trong cay bao trum nho nhat:\n";
         for (Edge &e : result) {
-            std::cout << e.src << " -- " << e.dest << " == " << e.weight << std::endl;
+            cout << e.src << " -- " << e.dest << " == " << e.weight << endl;
         }
     }
 };
 
 int main() {
     int V, E;
-    std::cout << "Nhap so luong dinh (V): ";
-    std::cin >> V;
-    std::cout << "Nhap so luong canh (E): ";
-    std::cin >> E;
+    cout << "Nhap so luong dinh (V): ";
+    cin >> V;
+    cout << "Nhap so luong canh (E): ";
+    cin >> E;
 
     Graph g(V, E);
 
-    std::cout << "Nhap cac canh va trong so cua chung (dinh nguon, dinh dich, trong so):" << std::endl;
+    cout << "Nhap cac canh va trong so cua chung (dinh nguon, dinh dich, trong so):" << endl;
     for (int i = 0; i < E; ++i) {
         int u, v, w;
-        std::cin >> u >> v >> w;
+        cin >> u >> v >> w;
         g.addEdge(u, v, w);
     }
 
